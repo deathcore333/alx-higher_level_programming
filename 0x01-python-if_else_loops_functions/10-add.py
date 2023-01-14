@@ -1,3 +1,2 @@
 #!/usr/bin/python3
-def add(a, b):
-    print("{}".format(a + b))
+def add(a, b): return a + b
