@@ -10,9 +10,12 @@ def roman_to_int(roman_string):
     for ch in roman_string:
         if ch not in rom_n:
             return 0
-        if rom_n[ch] > last_rom:
-            num += rom_n[ch] - 2 * last_rom
-        else:
-            num += rom_n[ch]
-            last_rom = rom_n[ch]
-        return num
+        if rom_n[ch] > last_rom and last_row != 0:
+            if ch == 'V' or ch == 'X':
+                num -= 2
+            elif ch == 'L' or ch == 'C':
+                num -= 20
+            elif ch == 'D' or ch == 'M':
+                num -= 200
+        last_rom = rom_n[ch]
+    return num
