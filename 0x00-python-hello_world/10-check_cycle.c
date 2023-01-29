@@ -18,13 +18,13 @@ int check_cycle(listint_t *list)
 	turtle = list->next;
 	hare = list->next;
 
-	while (turtle && hare && hare->next)
+	while (turtle && hare->next)
 	{
 		if (turtle == hare)
 			return (1);
 
 		turtle = turtle->next;
-		hare = hare->next;
+		hare = hare->next->next;
 	}
 
 	return (0);
