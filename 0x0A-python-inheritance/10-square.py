@@ -8,7 +8,7 @@ class Square(Rectangle):
     def __init__(self, size):
         """Initialize a new square.
         Args:
-            size (int): size of square
+            size (int): size of square.
         """
         self.integer_validator("size", size)
         super().__init__(size, size)
