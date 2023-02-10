@@ -4,8 +4,7 @@ Rectangle = __import__('9-rectangle').Rectangle
 
 
 class Square(Rectangle):
-    """Represent a square."""
-
+    """Represent a square using rectangle."""
     def __init__(self, size):
         """Initialize a new square.
         Args:
@@ -16,8 +15,8 @@ class Square(Rectangle):
         self.__size = size
 
     def area(self):
-        """returns the area of the square"""
-        return (self.__size ** self.__size)
+        """Returns the area of the square"""
+        return (self.__size * self.__size)
 
     def __str__(self):
         """String representation of a square"""
