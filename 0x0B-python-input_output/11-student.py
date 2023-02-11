@@ -21,7 +21,9 @@ class Student:
         if attrs is a list of strings, represents only
         attrs in this list
         Args:
-            attrs (list): (Optional) attributes to represent
+            attrs (list): (Optional) attributes to represention
+        Return:
+            A dictionary representation of Student object
         """
         if (type(attrs) == list and
                 all(type(ele) == str for ele in attrs)):
@@ -32,6 +34,8 @@ class Student:
         """Replace all atttributesof the student
         Args:
             json (dict): The key/value pairs to replace attributes with
+        Return:
+            None
         """
         for k, v in json.items():
             setattr(self, k, v)
