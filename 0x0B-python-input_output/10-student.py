@@ -16,12 +16,15 @@ class Student:
         self.last_name = last_name
         self.age = age
 
-    def to_json(self attrs=None):
-        """Get Dict representation of Student.
+    def to_json(self, attrs=None):
+        """Return Dict representation of Student.
         if attrs is a list of strings, represents only
         attrs in this list
         Args:
             attrs (list): (Optional) attributes to represent
+            default value is NONE
+        Returns:
+            dict: dictionary representation of the student
         """
         if (type(attrs) == list and
                 all(type(ele) == str for ele in attrs)):
