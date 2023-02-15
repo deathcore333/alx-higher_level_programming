@@ -22,9 +22,9 @@ class Student:
         attrs in this list
         Args:
             attrs (list): (Optional) attributes to represention
-            default value is NOne
+            Default value is NOne
         Return:
-            dict:  A dictionary representation of Student object
+            dict: A dictionary representation of Student object
         """
         if (type(attrs) == list and
                 all(type(ele) == str for ele in attrs)):
