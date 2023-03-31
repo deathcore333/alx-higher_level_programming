@@ -6,8 +6,8 @@ let matched;
 const result = {};
 // loop over values
 for (let i = 0; i < values.length; i++) {
-	result[JSON.stringify(values[i])] = [];
-	matched = dKeys.filter(key => dict[key] === values[i]);
-	matched.forEach(item => result[JSON.stringify(values[i])].push(item));
+  result[JSON.stringify(values[i])] = [];
+  matched = dKeys.filter(key => dict[key] === values[i]);
+  matched.forEach(item => result[JSON.stringify(values[i])].push(item));
 }
 console.log(result);
