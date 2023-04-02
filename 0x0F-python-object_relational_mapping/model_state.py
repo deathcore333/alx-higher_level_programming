@@ -2,7 +2,7 @@
 """
 Defines a base class state
 """
-from SQLAlchemy import create_engine
+from sqlalchemy import create_engine
 import sys
 from model_state import Base, State
 
