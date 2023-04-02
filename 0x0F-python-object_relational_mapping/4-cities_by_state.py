@@ -34,6 +34,6 @@ if __name__ == "__main__":
     cur.execute(sql)
     query_rows = cur.fetchall()
     for row in query_rows:
-        print(raw)
+        print(row)
     cur.close()
     conn.close()
