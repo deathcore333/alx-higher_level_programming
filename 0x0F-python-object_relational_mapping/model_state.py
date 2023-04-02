@@ -3,7 +3,7 @@
 Defines a base class state
 """
 from sqlalchemy import create_engine
-import sys
+from sys import argv
 from model_state import Base, State
 
 if __name__ == "__main__":
