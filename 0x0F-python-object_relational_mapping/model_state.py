@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Defines a base class state
+Start link class to table in database
 """
 from sqlalchemy import create_engine
 from sys import argv
