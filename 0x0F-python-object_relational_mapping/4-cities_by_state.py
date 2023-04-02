@@ -3,7 +3,7 @@
 scripts that lists all the cities from the database
 """
 
-import MySQL
+import MySQLdb
 from sys import argv
 
 if __name__ == "__main__":
@@ -13,9 +13,9 @@ if __name__ == "__main__":
     password = argv[2]
     database = argv[3]
     server = 'localhost'
-    port 3306
+    porti = 3306
 
-    conn = MySQL.connect(host=server,
+    conn = MySQLdb.connect(host=server,
                          port=port,
                          user=username,
                          passwd=password,
