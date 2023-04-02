@@ -25,7 +25,7 @@ if __name__ == "__main__":
     sql = "SELECT * FROM states WHERE name = %s ORDER BY id ASC"
     cur.execute(sql, (state,))
     query_rows = cur.fetchall()
-    for row in query_row:
+    for row in query_rows:
         print(row)
     cur.close()
     conn.close()
