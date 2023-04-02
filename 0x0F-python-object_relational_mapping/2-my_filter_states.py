@@ -18,7 +18,7 @@ if __name__ == "__main__":
                            passwd=password,
                            db=name
                            )
-    cur = con.cursor()
+    cur = conn.cursor()
     sql = """SELECT * FROM states WHERE name LIKE BINARY 
           ORDER BY id ASC""".format(state)
     cur.execute(sql)
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     for row in query_rows:
         print(row)
     cur.close()
-    con.close()
+    conn.close()
