@@ -17,7 +17,7 @@ if __name__ == "__main__":
     session = Session()
 
     delete_state = session.query(State).filter(
-                    State.name.ilike('%a%')).delete()
+                    State.name.ilike('%a%')).delete(synchronize_session=False)
 
     session.commit()
     session.close()
