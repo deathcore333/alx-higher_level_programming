@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """
 Lists all State objects, and corresponding City objects,
-contained in the database
+entailed in the database
 """
 from sys import argv
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from relationship_city import City
 from relationship_state import Base, State
