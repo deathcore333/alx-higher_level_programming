@@ -22,7 +22,7 @@ if __name__ == "__main__":
     session = Session()
     state = session.query(State).filter(
             State.name.like(param)).first()
-    if state is not None:
+    if state is None:
         print("Not Found")
-    print(state.id)
+    print("{}".format(state.id))
     session.close()
