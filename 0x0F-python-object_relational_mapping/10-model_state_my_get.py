@@ -23,6 +23,6 @@ if __name__ == "__main__":
     state = session.query(State).filter(
             State.name.like(param)).first()
     if state is None:
-        print("Not Found")
+        print("Not found")
     print("{}".format(state.id))
     session.close()
