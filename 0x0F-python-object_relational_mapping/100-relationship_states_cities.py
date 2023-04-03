@@ -7,7 +7,7 @@ from sys import argv
 from relationship_state import Base, State
 from relationship_city import City
 from sqlalchemy import create_engine
-from sqlalchemy.orm import session
+from sqlalchemy.orm import Session
 
 if __name__ == "__main__":
     engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'
@@ -15,9 +15,12 @@ if __name__ == "__main__":
                            pool_pre_ping=True)
     Base.metadata.create_all(engine)
     session = Session(engine)
+    
+    new_state = "California"
+    new_city = "San Francisco"
+    newState = State(name=new_state)
+    newCity = City(name=new_city, state=newState)
 
-    newState = State(name="California")
-    newCity = City(name="San Francisco", state=newState)
     session.add(newState)
     session.add(newCity)
     session.commit()
