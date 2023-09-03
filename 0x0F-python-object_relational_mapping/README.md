@@ -1,354 +1,191 @@
-# 0x0F. Python - Object-relational mapping
+# OBJECT RELATIONAL MAPPING ORM
+# Object-Relational Mapping (ORM) in Python
 
-```sql
-███ ███ █   █     ███ █ █ ███ █ █ ███ █   █     █   █ █ █ ███ ███ █
-█ █ █ █ ██ ██     █ █ █ █  █  █ █ █ █ ██  █     ██ ██ █ █ █   █ █ █
-█ █ ██  █ █ █     ███  █   █  ███ █ █ █ █ █     █ █ █  █   █  █ █ █
-█ █ █ █ █   █     █    █   █  █ █ █ █ █  ██     █   █  █    █ ███ █
-███ █ █ █   █     █    █   █  █ █ ███ █   █     █   █  █  ███ ███ ███
-                                                                █
-```
+## Table of Contents
+- [Introduction](#introduction)
+- [Why Use ORM?](#why-use-orm)
+- [Popular Python ORM Libraries](#popular-python-orm-libraries)
+- [Getting Started with SQLAlchemy](#getting-started-with-sqlalchemy)
+  - [Installation](#installation)
+  - [Basic Usage](#basic-usage)
+- [Defining Models](#defining-models)
+  - [Creating a SQLAlchemy Model](#creating-a-sqlalchemy-model)
+  - [Mapping to a Database Table](#mapping-to-a-database-table)
+- [CRUD Operations](#crud-operations)
+  - [Creating Records](#creating-records)
+  - [Reading Records](#reading-records)
+  - [Updating Records](#updating-records)
+  - [Deleting Records](#deleting-records)
+- [Querying](#querying)
+  - [Filtering](#filtering)
+  - [Joins](#joins)
+  - [Aggregation](#aggregation)
+- [Conclusion](#conclusion)
 
-## Learning Objectives
+## Introduction
 
-### General
+Object-Relational Mapping (ORM) is a programming technique that allows you to interact with relational databases using Python objects. ORM libraries abstract the database interaction, making it more Pythonic and easier to work with databases.
 
-* Why Python programming is awesome
-* How to connect to a MySQL database from a Python script
-* How to ```SELECT``` rows in a MySQL table from a Python script
-* How to ```INSERT``` rows in a MySQL table from a Python script
-* What ORM means
-* How to map a Python Class to a MySQL table
+In Python, SQLAlchemy is one of the most popular ORM libraries. This README will primarily focus on SQLAlchemy, but the concepts are applicable to other Python ORM libraries as well.
 
-## Environment
+## Why Use ORM?
 
-<div>
-<!-- Ubuntu --> <a href="https://ubuntu.com/" target="_blank"><img height="24px" src="https://raw.githubusercontent.com/ralexrivero/xelar_theme_profile/main/icons/ubuntu-icon.svg" alt="Ubuntu"> </a> <!-- GNU Bash --> <a href="https://www.vim.org/" target="_blank"><img height="24px" src="https://raw.githubusercontent.com/ralexrivero/xelar_theme_profile/main/icons/gnu-bash-logo.svg" alt="GNU Bash"> <!-- Vim --> <a href="https://www.vim.org/" target="_blank"><img height="24px" src="https://raw.githubusercontent.com/ralexrivero/xelar_theme_profile/main/icons/Vimlogo.svg" alt="Vim text editor"> </a> <!-- MySQL --> <a href="" target="_blank"><img height="24px" src="https://raw.githubusercontent.com/ralexrivero/xelar_theme_profile/main/icons/mysql.svg" alt="MySQL" > </a>
-</div>
+- **Abstraction**: ORM provides a higher-level abstraction over SQL, allowing developers to work with databases using Python classes and objects.
+- **Database Independence**: You can switch between different database backends (e.g., SQLite, PostgreSQL, MySQL) without changing your Python code significantly.
+- **Security**: ORM libraries often provide built-in protection against SQL injection attacks.
+- **Productivity**: ORM simplifies database operations, reducing the amount of boilerplate code required for database interactions.
 
-* OS: Ubuntu 20.04 LTS
-* Terminal: Bash 5.0.17
-* Editor: VIM 7.4.52
-* Language: SQL
-* Language: Python 3.8.8
-* MySQL 8.0.27
-* modules
-  * ```MySQLdb``` 2.0.x
-  * ```SQLAlchemy```1.4.x
+## Popular Python ORM Libraries
 
->MySQL installation:
+Besides SQLAlchemy, some other popular Python ORM libraries include:
 
-```bash
-sudo apt update
-sudo apt install mysql-server
-```
+- **Django ORM**: Part of the Django web framework, it provides a built-in ORM for web applications.
+- **Peewee**: A lightweight and expressive ORM.
+- **Django REST framework**: An extension of Django ORM specifically designed for building RESTful APIs.
 
-> Connect to MySQL:
+## Getting Started with SQLAlchemy
 
-```bash
-sudo mysql
-```
+### Installation
 
-> Container on demand:
+You can install SQLAlchemy using pip:
 
 ```bash
-service mysql start
+pip install SQLAlchemy
 ```
 
-> MYSQLdb installation:
+### Basic Usage
 
-```bash
-$ sudo apt-get install python3-dev
-$ sudo apt-get install libmysqlclient-dev
-$ sudo apt-get install zlib1g-dev
-$ sudo pip3 install mysqlclient
-...
-$ python3
->>> import MySQLdb
->>> MySQLdb.version_info
-(2, 0, 3, 'final', 0)
-```
-
-> SQLAlchemy install:
-
-```bash
-$ sudo pip3 install SQLAlchemy
-...
-$ python3
->>> import sqlalchemy
->>> sqlalchemy.__version__
-'1.4.22
-```
-
-The following messege must be ignored:
-
-```bash
-/usr/local/lib/python3.4/dist-packages/sqlalchemy/engine/default.py:552: Warning: (1681, "'@@SESSION.GTID_EXECUTED' is deprecated and will be re
-moved in a future release.")
-  cursor.execute(statement, parameters)
-```
-
-## With or without ORM examples
-
-> Without ORM
+Here's a basic example of how to use SQLAlchemy:
 
 ```python
-conn = MySQLdb.connect(host="localhost", port=3306, user="root", passwd="root", db="my_db", charset="utf8")
-cur = conn.cursor()
-cur.execute("SELECT * FROM states ORDER BY id ASC") # HERE I have to know SQL to grab all states in my database
-query_rows = cur.fetchall()
-for row in query_rows:
-    print(row)
-cur.close()
-conn.close()
-```
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-> With ORM
+# Create an SQLite database in memory
+engine = create_engine('sqlite:///:memory:')
 
-```python
-engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format("root", "root", "my_db"), pool_pre_ping=True)
+# Create a Session class
+Session = sessionmaker(bind=engine)
+
+# Create a new session
+session = Session()
+
+# Define and create a new table
+from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    birthdate = Column(Date)
+
 Base.metadata.create_all(engine)
-
-session = Session(engine)
-for state in session.query(State).order_by(State.id).all(): # HERE: no SQL query, only objects!
-    print("{}: {}".format(state.id, state.name))
-session.close()
 ```
 
-## Execute files
+## Defining Models
 
-all files include the following shebang:
+### Creating a SQLAlchemy Model
 
-```bash
-#!/usr/bin/python3
+In SQLAlchemy, a model is defined as a Python class that inherits from `declarative_base()`. Each attribute in the class corresponds to a column in the database table.
+
+```python
+from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    birthdate = Column(Date)
 ```
 
-```bash
-$ cat 0-select_states.sql | mysql -uroot -p
-Enter password:
-$ ./0-select_states.py root root hbtn_0e_0_usa
-(1, 'California')
-(2, 'Arizona')
-(3, 'Texas')
-(4, 'New York')
-(5, 'Nevada')
+### Mapping to a Database Table
+
+To create the corresponding table in the database, use `Base.metadata.create_all(engine)`, where `engine` is your database engine.
+
+```python
+from sqlalchemy import create_engine
+
+# Create an SQLite database
+engine = create_engine('sqlite:///mydatabase.db')
+
+# Create the table
+Base.metadata.create_all(engine)
 ```
 
-```bash
-$ ./1-filter_states.py root root hbtn_0e_0_usa
-(4, 'New York')
-(5, 'Nevada')
+## CRUD Operations
+
+### Creating Records
+
+```python
+# Creating a new user
+new_user = User(username='john_doe', birthdate='1990-01-01')
+session.add(new_user)
+session.commit()
 ```
 
-```bash
-$ ./2-my_filter_states.py root root hbtn_0e_0_usa 'Arizona'
-(2, 'Arizona')
+### Reading Records
+
+```python
+# Querying for a user by ID
+user = session.query(User).get(1)
+
+# Querying for all users
+all_users = session.query(User).all()
 ```
 
-> SQL injection
-  > Delete all the records in the table
+### Updating Records
 
-```bash
-./2-my_filter_states.py root root hbtn_0e_0_usa "Arizona'; TRUNCATE TABLE states ; SELECT * FROM states WHERE name = '"
-(2, 'Arizona')
+```python
+# Updating a user's information
+user = session.query(User).filter_by(username='john_doe').first()
+user.username = 'johndoe'
+session.commit()
 ```
 
-```bash
-$ ./0-select_states.py root root hbtn_0e_0_usa
-$
+### Deleting Records
+
+```python
+# Deleting a user
+user = session.query(User).filter_by(username='johndoe').first()
+session.delete(user)
+session.commit()
 ```
 
-> SQL injection safe
+## Querying
 
-```bash
-$ ./3-my_safe_filter_states.py root root hbtn_0e_0_usa 'Arizona'
-(2, 'Arizona')
+### Filtering
+
+```python
+# Querying users with a specific condition
+users = session.query(User).filter(User.username.like('%doe%')).all()
 ```
 
-> Cities by state
+### Joins
 
-```bash
-cat 4-cities_by_state.sql | mysql -uroot -p
+```python
+from sqlalchemy import join
+
+# Joining two tables
+from_table = session.query(User)
+joined_table = join(from_table, other_table, from_table.c.id == other_table.c.user_id)
+result = session.execute(joined_table).fetchall()
 ```
 
-```bash
-$ ./4-cities_by_state.py root root hbtn_0e_4_usa
-(1, 'San Francisco', 'California')
-(2, 'San Jose', 'California')
-(3, 'Los Angeles', 'California')
-(4, 'Fremont', 'California')
-(5, 'Livermore', 'California')
-(6, 'Page', 'Arizona')
-(7, 'Phoenix', 'Arizona')
-(8, 'Dallas', 'Texas')
-(9, 'Houston', 'Texas')
-(10, 'Austin', 'Texas')
-(11, 'New York', 'New York')
-(12, 'Las Vegas', 'Nevada')
-(13, 'Reno', 'Nevada')
-(14, 'Henderson', 'Nevada')
-(15, 'Carson City', 'Nevada')
+### Aggregation
+
+```python
+from sqlalchemy import func
+
+# Performing aggregation
+total_users = session.query(func.count(User.id)).scalar()
 ```
 
-```bash
-./5-filter_cities.py root root hbtn_0e_4_usa Texas
-Dallas, Houston, Austin
-```
+## Conclusion
 
-```bash
-$ cat 6-model_state.sql | mysql -uroot -p
-Enter password:
-```
-
-```bash
-$ ./6-model_state.py root root hbtn_0e_6_usa
-$ cat 6-model_state.sql | mysql -uroot -p
-Enter password:
-Table   Create Table
-states  CREATE TABLE `states` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `name` varchar(128) NOT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=latin1
-```
-
----
-
-## ORM
-
-```bash
-cat 7-model_state_fetch_all.sql | mysql -uroot -p hbtn_0e_6_usa
-```
-
-```bash
-$ ./7-model_state_fetch_all.py root root hbtn_0e_6_usa
-1: California
-2: Arizona
-3: Texas
-4: New York
-5: Nevada
-```
-
-```bash
-$ ./8-model_state_fetch_first.py root root hbtn_0e_6_usa
-1: California
-```
-
-```bash
-$ ./10-model_state_my_get.py root root hbtn_0e_6_usa Texas
-3
-```
-
-```bash
-$ ./11-model_state_insert.py root root hbtn_0e_6_usa
-6
-```
-
-```bash
-$ ./12-model_state_update_id_2.py root root hbtn_0e_6_usa
-$
-```
-
-```bash
-$ ./13-model_state_delete_a.py root root hbtn_0e_6_usa
-$ ./7-model_state_fetch_all.py root root hbtn_0e_6_usa
-2: New Mexico
-4: New York
-$
-```
-
-```bash
-$ cat 14-model_city_fetch_by_state.sql | mysql -uroot -p
-Enter password:
-$ ./14-model_city_fetch_by_state.py root root hbtn_0e_14_usa
-California: (1) San Francisco
-California: (2) San Jose
-California: (3) Los Angeles
-California: (4) Fremont
-California: (5) Livermore
-Arizona: (6) Page
-Arizona: (7) Phoenix
-Texas: (8) Dallas
-Texas: (9) Houston
-Texas: (10) Austin
-New York: (11) New York
-Nevada: (12) Las Vegas
-Nevada: (13) Reno
-Nevada: (14) Henderson
-Nevada: (15) Carson City
-$
-```
-
-```bash
-$ cat 100-relationship_states_cities.sql | mysql -uroot -p
-Enter password:
-```
-
-```bash
-$ ./100-relationship_states_cities.py root root hbtn_0e_100_usa
-$ cat 100-relationship_states_cities.sql | mysql -uroot -p
-Enter password:
-id  name
-1   California
-id  name    state_id
-1   San Francisco   1
-```
-
-```bash
-$ cat 101-relationship_states_cities_list.sql | mysql -uroot -p
-$ ./101-relationship_states_cities_list.py root root hbtn_0e_101_usa
-1: California
-    1: San Francisco
-    2: San Jose
-    3: Los Angeles
-    4: Fremont
-    5: Livermore
-2: Arizona
-    6: Page
-    7: Phoenix
-3: Texas
-    8: Dallas
-    9: Houston
-    10: Austin
-4: New York
-    11: New York
-5: Nevada
-    12: Las Vegas
-    13: Reno
-    14: Henderson
-    15: Carson City
-$
-```
-
-```bash
-$ ./102-relationship_cities_states_list.py root root hbtn_0e_101_usa
-1: San Francisco -> California
-2: San Jose -> California
-3: Los Angeles -> California
-4: Fremont -> California
-5: Livermore -> California
-6: Page -> Arizona
-7: Phoenix -> Arizona
-8: Dallas -> Texas
-9: Houston -> Texas
-10: Austin -> Texas
-11: New York -> New York
-12: Las Vegas -> Nevada
-13: Reno -> Nevada
-14: Henderson -> Nevada
-15: Carson City -> Nevada
-$
-```
-
-## Autor
-
->```Ronald Rivero```
-
-## Connect
-
-<br>
-<div>
-<!-- Twitter -->
-<a href="https://twitter.com/ralex_uy" target="_blank"> <img align="left" alt="Ronald Rivero | Twitter" src="https://img.shields.io/twitter/follow/ralex_uy?style=social"/> </a>
-<!-- Linkedin -->
-<a href="https://www.linkedin.com/in/ronald-rivero/" target="_blank"> <img align="left" alt="Ronald Rivero | LinkedIn" src="https://img.shields.io/badge/LinkedIn-Follow-blue?style=social&logo=linkedin"/> </a>
-<!-- Github -->
-<a href="https://github.com/ralexrivero/" target="_blank"> <img align="left" src="https://img.shields.io/github/followers/ralexrivero?style=social" alt="Ralex | Github"> </a>
-</br>
-</div>
+Object-Relational Mapping in Python, using libraries like SQLAlchemy, simplifies database interactions and makes it easier to work with databases in a Pythonic way. By defining models, you can create, read, update, and delete records in the database using Python objects and queries. This approach enhances productivity and maintainability when working with relational databases in Python applications.
